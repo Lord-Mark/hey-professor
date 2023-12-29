@@ -19,8 +19,9 @@ fi
 
 # Evitar adicionar o ID da tarefa nos commits que já possuem o ID da tarefa no início
 # Exemplo: HEY-1: HEY-1: minha funcionalidade
-if [[ $COMMIT_MESSAGE == $ISSUE_ID* ]]; then
+if echo "$COMMIT_MESSAGE" | grep -q "^$ISSUE_ID:"; then
     exit 0
 fi
+
 
 echo "$ISSUE_ID: $COMMIT_MESSAGE" > "$1"
