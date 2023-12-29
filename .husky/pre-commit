@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 
-# Rodar o php stan
+# Roda o phpstan
 ./vendor/bin/phpstan
 
 if [ $? -ne 0 ]; then
@@ -10,6 +10,14 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 
+# Roda os testes
+echo "Running tests, please wait..."
+php artisan test --parallel
+
+if [ $? -ne 0 ]; then
+    echo "Opa! Algum teste não passou, corrija seus testes antes de continuar..."
+    exit 1;
+fi
 
 
 # Formatar cada arquivo alterado usando laravel pint
