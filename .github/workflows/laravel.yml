@@ -26,8 +26,12 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
+        
     - name: Build Assets
       run: npm run build
+      
+    - name: install package.json
+      run: npm install
       
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
