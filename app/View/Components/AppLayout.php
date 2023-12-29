@@ -2,8 +2,8 @@
 
 namespace App\View\Components;
 
-use Illuminate\View\Component;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\View\Component;
 
 class AppLayout extends Component
 {

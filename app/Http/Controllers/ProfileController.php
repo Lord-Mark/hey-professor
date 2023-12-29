@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Contracts\View\View as ViewContract;
-
+use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Support\Facades\{Auth, Redirect};
 
 class ProfileController extends Controller
 {

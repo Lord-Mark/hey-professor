@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+
+# Rodar o php stan
+./vendor/bin/phpstan
+
+if [ $? -ne 0 ]; then
+    echo "Opa! phpstan com erros, corrija todos os erros antes de continuar..."
+    exit 1;
+fi
+
+
+
+# Formatar cada arquivo alterado usando laravel pint
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".php\{0,1\}$") || true
+
+echo "Formatting files in PSR12, please wait..."
+echo ""
+
+for FILE in $STAGED_FILES
+do
+#    echo "${FILE}"
+    ./vendor/bin/pint "${FILE}" > /dev/null >&1
+    git add "${FILE}"
+done
+
+exit 0;
