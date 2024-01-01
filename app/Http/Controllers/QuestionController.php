@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Rules\EndWithQuestionMarkRule;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -34,7 +35,11 @@ class QuestionController extends Controller
 
         Question::query()->create(
             request()->validate([
-                'question' => ['required', "min:10"],
+                'question' => [
+                    'required',
+                    "min:10",
+                    new EndWithQuestionMarkRule(),
+                ],
             ])
         );
 
