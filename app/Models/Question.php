@@ -9,5 +9,4 @@ class Question extends Model
 {
     use HasFactory;
 
-    public mixed $question;
 }
