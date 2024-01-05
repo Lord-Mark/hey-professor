@@ -62,7 +62,18 @@ class User extends Authenticatable
             ]
         );
     }
-
+    public function dislike(Question $question): void
+    {
+        $this->votes()->updateOrCreate(
+            [
+                "question_id" => $question->getAttribute('id'),
+            ],
+            [
+                "like"    => 0,
+                "dislike" => 1,
+            ]
+        );
+    }
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);

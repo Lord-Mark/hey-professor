@@ -33,6 +33,16 @@ class QuestionController extends Controller
 
         return back();
     }
+    /**
+     * @param Question $question
+     * @return RedirectResponse
+     */
+    public function dislike(Question $question): RedirectResponse
+    {
+        user()->dislike($question);
+
+        return back();
+    }
 
     public function update(Request $request, string $id)
     {
