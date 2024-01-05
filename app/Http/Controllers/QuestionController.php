@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Question, Vote};
+use App\Models\{Question, User, Vote};
 use App\Rules\EndWithQuestionMarkRule;
 use Illuminate\Http\{RedirectResponse, Request};
 
@@ -29,12 +29,9 @@ class QuestionController extends Controller
      */
     public function like(Question $question): RedirectResponse
     {
-        Vote::query()->create([
-            "question_id" => $question->getAttribute('id'),
-            "user_id"     => auth()->user()->getAuthIdentifier(),
-            "like"        => 1,
-            "dislike"     => 0,
-        ]);
+        /** @var User $user */
+        $user = auth()->user();
+        $user->like($question);
 
         return back();
     }
