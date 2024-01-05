@@ -29,9 +29,7 @@ class QuestionController extends Controller
      */
     public function like(Question $question): RedirectResponse
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $user->like($question);
+        user()->like($question);
 
         return back();
     }
