@@ -7,6 +7,8 @@ use function Pest\Laravel\{actingAs, assertDatabaseCount, assertDatabaseHas, pos
 it('should be able to create a new question bigger than 255 characters', function () {
 
     // Arrange :: Preparar
+
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -26,6 +28,7 @@ it('should be able to create a new question bigger than 255 characters', functio
 
 it('should have at least 10 characters', function () {
     // Arrange :: Preparar
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
@@ -44,6 +47,7 @@ it('should have at least 10 characters', function () {
 
 it('should check if it ends with a question mark', function () {
     // Arrange :: Preparar
+    /** @var User $user */
     $user = User::factory()->create();
     actingAs($user);
 
