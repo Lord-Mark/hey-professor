@@ -2,37 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
+use App\Models\{Question, User, Vote};
 use App\Rules\EndWithQuestionMarkRule;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 
 class QuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(Request $request): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
-    {
-        //        $question           = new Question();
-        //        $question->question = $request->get('question');
-        //        $question->save();
-
         Question::query()->create(
             request()->validate([
                 'question' => [
@@ -47,34 +24,23 @@ class QuestionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param Question $question
+     * @return RedirectResponse
      */
-    public function show(string $id)
+    public function like(Question $question): RedirectResponse
     {
-        //
-    }
+        user()->like($question);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return back();
     }
-
     /**
-     * Update the specified resource in storage.
+     * @param Question $question
+     * @return RedirectResponse
      */
-    public function update(Request $request, string $id)
+    public function dislike(Question $question): RedirectResponse
     {
-        //
-    }
+        user()->dislike($question);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return back();
     }
 }
