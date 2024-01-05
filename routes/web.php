@@ -9,6 +9,8 @@ Route::get('/', function () {
 
         return to_route('dashboard');
     }
+
+    return view('welcome');
 });
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
@@ -20,5 +22,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/question/store', [QuestionController::class, "store"])->name('question.store');
+Route::post('/question/like/{question}', [QuestionController::class, "like"])->name('question.like');
 
 require __DIR__ . '/auth.php';
