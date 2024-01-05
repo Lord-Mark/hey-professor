@@ -52,12 +52,15 @@ class User extends Authenticatable
      */
     public function like(Question $question): void
     {
-        Vote::query()->create([
-            "question_id" => $question->getAttribute('id'),
-            "user_id"     => auth()->user()->getAuthIdentifier(),
-            "like"        => 1,
-            "dislike"     => 0,
-        ]);
+        $this->votes()->updateOrCreate(
+            [
+                "question_id" => $question->getAttribute('id'),
+            ],
+            [
+                "like"    => 1,
+                "dislike" => 0,
+            ]
+        );
     }
 
     public function votes(): HasMany
