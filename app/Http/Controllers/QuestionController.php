@@ -19,6 +19,12 @@ class QuestionController extends Controller
         return to_route('dashboard');
     }
 
+    public function publish(Question $question): RedirectResponse
+    {
+        $question->update(['draft' => false]);
+
+        return back();
+    }
     /**
      * @param Question $question
      * @return RedirectResponse

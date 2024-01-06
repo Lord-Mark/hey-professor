@@ -25,7 +25,7 @@ Route::prefix('question')->controller(QuestionController::class)->name('question
     Route::post('/store', 'store')->name('store');
     Route::post('/like/{question}', 'like')->name('like');
     Route::post('/dislike/{question}', 'dislike')->name('dislike');
-
+    Route::put('/publish/{question}', 'publish')->name('publish');
 });
 
 require __DIR__ . '/auth.php';
