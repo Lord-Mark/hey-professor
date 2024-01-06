@@ -2,25 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreQuestionRequest;
 use App\Models\{Question, User, Vote};
-use App\Rules\EndWithQuestionMarkRule;
 use Illuminate\Http\{RedirectResponse, Request};
 
 class QuestionController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(StoreQuestionRequest $request): RedirectResponse
     {
-        $attributes = request()->validate([
-            'question' => [
-                'required',
-                "min:10",
-                new EndWithQuestionMarkRule(),
-            ],
+
+        Question::query()->create([
+            'question' => request()->question,
+            'draft'    => true,
         ]);
-        Question::query()
-            ->create(
-                array_merge($attributes, ['draft' => true])
-            );
 
         return to_route('dashboard');
     }
