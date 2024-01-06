@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\{Question, User};
 
 use function Pest\Laravel\{actingAs, assertDatabaseCount, assertDatabaseHas, post};
 
@@ -61,4 +61,22 @@ it('should check if it ends with a question mark', function () {
         'question' => "Are you sure that it is a question, it's missing a question mark (?) in the end.",
     ]);
     assertDatabaseCount('questions', 0);
+});
+
+it('should create a question as a draft always', function () {
+
+    //Arrange
+    $user = factoryNewUser();
+    actingAs($user);
+
+    // Act
+    $request = post(route("question.store"), [
+        'question' => str_repeat("*", 10) . "?",
+    ]);
+
+    // Assert
+    assertDatabaseHas('questions', [
+        'question' => str_repeat("*", 10) . "?",
+        'draft'    => true,
+    ]);
 });

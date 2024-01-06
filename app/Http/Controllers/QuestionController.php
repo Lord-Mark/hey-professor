@@ -10,15 +10,17 @@ class QuestionController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
-        Question::query()->create(
-            request()->validate([
-                'question' => [
-                    'required',
-                    "min:10",
-                    new EndWithQuestionMarkRule(),
-                ],
-            ])
-        );
+        $attributes = request()->validate([
+            'question' => [
+                'required',
+                "min:10",
+                new EndWithQuestionMarkRule(),
+            ],
+        ]);
+        Question::query()
+            ->create(
+                array_merge($attributes, ['draft' => true])
+            );
 
         return to_route('dashboard');
     }
@@ -33,6 +35,7 @@ class QuestionController extends Controller
 
         return back();
     }
+
     /**
      * @param Question $question
      * @return RedirectResponse

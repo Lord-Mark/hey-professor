@@ -11,6 +11,10 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'draft' => 'boolean',
+    ];
+
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
@@ -32,5 +36,4 @@ class Question extends Model
 
         return new Attribute(get: fn () => $votes->sum('dislike'));
     }
-
 }
