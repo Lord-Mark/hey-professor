@@ -21,8 +21,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('/question/store', [QuestionController::class, "store"])->name('question.store');
-Route::post('/question/like/{question}', [QuestionController::class, "like"])->name('question.like');
-Route::post('/question/dislike/{question}', [QuestionController::class, "dislike"])->name('question.dislike');
+Route::prefix('question')->controller(QuestionController::class)->name('question.')->group(function () {
+    Route::post('/store', 'store')->name('store');
+    Route::post('/like/{question}', 'like')->name('like');
+    Route::post('/dislike/{question}', 'dislike')->name('dislike');
+
+});
 
 require __DIR__ . '/auth.php';
