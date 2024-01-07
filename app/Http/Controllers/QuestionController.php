@@ -3,22 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
-use App\Models\{Question, User, Vote};
+use App\Models\{Question};
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\{RedirectResponse, Request};
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\{Factory, View};
+use Illuminate\Foundation\Application as ViewApplication;
+use Illuminate\Http\{RedirectResponse};
 
 class QuestionController extends Controller
 {
+    public function index(): View|ViewApplication|Factory|Application
+    {
+        $questions = user()->questions;
+
+        return view('question.index', compact('questions'));
+    }
+
     public function store(StoreQuestionRequest $request): RedirectResponse
     {
-
         user()->questions()->create([
             'question' => request()->question,
             'draft'    => true,
         ]);
 
-        return to_route('dashboard');
+        return back();
     }
 
     /**
@@ -26,8 +34,6 @@ class QuestionController extends Controller
      */
     public function publish(Question $question): RedirectResponse
     {
-        // abort_unless(user()->can('publish', $question), SymfonyResponse::HTTP_FORBIDDEN);
-
         $this->authorize('publish', $question);
         $question->update(['draft' => false]);
 

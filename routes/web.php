@@ -30,6 +30,7 @@ Route::prefix('question')
         Route::post('/like/{question}', 'like')->name('like');
         Route::post('/dislike/{question}', 'dislike')->name('dislike');
         Route::put('/publish/{question}', 'publish')->name('publish');
+        Route::get('/index', 'index')->name('index');
     });
 
 require __DIR__ . '/auth.php';

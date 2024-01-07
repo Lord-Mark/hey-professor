@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-header>
-        {{ __('Vote em uma pergunta!') }}
+        {{ __('Minhas perguntas') }}
     </x-header>
 
     <x-container>
@@ -20,13 +20,13 @@
         {{-- Listagem das perguntas --}}
 
         <div class="dark:text-gray-300 uppercase font-bold mb-1">
-            Lista de Perguntas
+            Minhas perguntas
         </div>
 
         <div class="space-y-4">
-        @foreach($questions as $item)
-            <x-question :question="$item" />
-        @endforeach
+            @foreach($questions as $item)
+                <x-question :question="$item" />
+            @endforeach
         </div>
     </x-container>
 
