@@ -34,7 +34,7 @@ class QuestionController extends Controller
      */
     public function publish(Question $question): RedirectResponse
     {
-        $this->authorize('modify', $question);
+        $this->authorize('see', $question);
         $question->update(['draft' => false]);
 
         return back();
@@ -67,15 +67,20 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question): RedirectResponse
     {
-        $this->authorize('modify', $question);
+        $this->authorize('see', $question);
 
         $question->delete();
 
         return back();
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function edit(Question $question): View|ViewApplication|Factory|Application
     {
+        $this->authorize('update', $question);
+
         return view('question.edit', compact('question'));
     }
 

@@ -9,8 +9,13 @@ class QuestionPolicy
     /**
      * Determine whether the user can modify the model.
      */
-    public function modify(User $user, Question $question): bool
+    public function see(User $user, Question $question): bool
     {
         return $question->user()->is($user);
+    }
+
+    public function update(User $user, Question $question): bool
+    {
+        return $question->draft;
     }
 }
