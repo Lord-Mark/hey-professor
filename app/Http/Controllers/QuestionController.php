@@ -74,8 +74,9 @@ class QuestionController extends Controller
         return back();
     }
 
-    public function edit()
+    public function edit(Question $question): View|ViewApplication|Factory|Application
     {
+        return view('question.edit', compact('question'));
     }
 
 }
