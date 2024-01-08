@@ -31,6 +31,7 @@ Route::prefix('question')
         Route::post('/dislike/{question}', 'dislike')->name('dislike');
         Route::put('/publish/{question}', 'publish')->name('publish');
         Route::get('/index', 'index')->name('index');
+        Route::delete('/{question}', 'destroy')->name('destroy');
     });
 
 require __DIR__ . '/auth.php';

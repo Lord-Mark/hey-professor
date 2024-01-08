@@ -34,7 +34,7 @@ class QuestionController extends Controller
      */
     public function publish(Question $question): RedirectResponse
     {
-        $this->authorize('publish', $question);
+        $this->authorize('modify', $question);
         $question->update(['draft' => false]);
 
         return back();
@@ -58,6 +58,18 @@ class QuestionController extends Controller
     public function dislike(Question $question): RedirectResponse
     {
         user()->dislike($question);
+
+        return back();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(Question $question): RedirectResponse
+    {
+        $this->authorize('modify', $question);
+
+        $question->delete();
 
         return back();
     }

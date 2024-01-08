@@ -7,9 +7,9 @@ use App\Models\{Question, User};
 class QuestionPolicy
 {
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can modify the model.
      */
-    public function publish(User $user, Question $question): bool
+    public function modify(User $user, Question $question): bool
     {
         return $question->user()->is($user);
     }
