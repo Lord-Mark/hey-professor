@@ -42,3 +42,23 @@ it('should be sure that only draft questions can be edited', function () {
     $draftRequest->assertRedirect();
     $notDraftRequest->assertForbidden();
 });
+
+it('should be sure that only the question owner can edit it', function () {
+    // Arrange
+    $rightUser = factoryNewUser();
+    $wrongUser = factoryNewUser();
+
+    $question    = Question::factory()->for($rightUser)->create(['draft' => true]);
+    $questionMsg = 'New question?';
+
+    // Act
+    actingAs($wrongUser);
+    $wrongRequest = put(route('question.update', $question), ['question' => $questionMsg]);
+
+    actingAs($rightUser);
+    $rightRequest = put(route('question.update', $question), ['question' => $questionMsg]);
+
+    // Assert
+    $rightRequest->assertRedirect();
+    $wrongRequest->assertForbidden();
+});
