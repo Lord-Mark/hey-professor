@@ -48,3 +48,22 @@ it('should be sure that only draft questions can be edited', function () {
     $draftRequest->assertSuccessful();
     $notDraftRequest->assertForbidden();
 });
+
+it('should be sure that only the question owner can edit it', function () {
+    // Arrange
+    $rightUser = factoryNewUser();
+    $wrongUser = factoryNewUser();
+
+    $question = Question::factory()->for($rightUser)->create(['draft' => true]);
+
+    // Act
+    actingAs($wrongUser);
+    $wrongRequest = get(route('question.edit', $question));
+
+    actingAs($rightUser);
+    $rightRequest = get(route('question.edit', $question));
+
+    // Assert
+    $wrongRequest->assertForbidden();
+    $rightRequest->assertSuccessful();
+});
