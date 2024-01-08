@@ -26,12 +26,14 @@ Route::prefix('question')
     ->middleware('auth')
     ->controller(QuestionController::class)
     ->group(function () {
-        Route::post('/store', 'store')->name('store');
-        Route::post('/like/{question}', 'like')->name('like');
         Route::post('/dislike/{question}', 'dislike')->name('dislike');
         Route::put('/publish/{question}', 'publish')->name('publish');
-        Route::get('/index', 'index')->name('index');
+        Route::get('/question/{question}/edit', 'edit')->name('edit');
         Route::delete('/{question}', 'destroy')->name('destroy');
+        Route::post('/like/{question}', 'like')->name('like');
+        Route::put('/{question}', 'update')->name('update');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/index', 'index')->name('index');
     });
 
 require __DIR__ . '/auth.php';

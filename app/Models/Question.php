@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 
+/**
+ * @property string $question
+ * @property bool $draft
+ */
 class Question extends Model
 {
     use HasFactory;
