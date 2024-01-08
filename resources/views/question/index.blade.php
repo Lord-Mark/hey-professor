@@ -26,7 +26,6 @@
 
         <div class="space-y-4">
 
-            {{--            <x-question :question="$item"/>--}}
             <x-table>
                 <x-table.thead>
                     <tr>
@@ -55,12 +54,16 @@
 
                                 </x-form>
 
-                                <x-form put :action="route('question.publish', $item)">
+                                <x-form get :action="route('question.edit', $item)">
+                                    <x-btn.purple type="submit">
+                                        Editar
+                                    </x-btn.purple>
+                                </x-form>
 
+                                <x-form put :action="route('question.publish', $item)">
                                     <x-btn.primary type="submit">
                                         Publicar
                                     </x-btn.primary>
-
                                 </x-form>
 
                             </div>
