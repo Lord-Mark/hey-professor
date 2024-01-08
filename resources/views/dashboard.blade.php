@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-header>
-        {{ __('Dashboard') }}
+        {{ __('Vote em uma pergunta!') }}
     </x-header>
 
     <x-container>

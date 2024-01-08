@@ -2,25 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Question, User, Vote};
-use App\Rules\EndWithQuestionMarkRule;
-use Illuminate\Http\{RedirectResponse, Request};
+use App\Http\Requests\StoreQuestionRequest;
+use App\Models\{Question};
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\{Factory, View};
+use Illuminate\Foundation\Application as ViewApplication;
+use Illuminate\Http\{RedirectResponse};
 
 class QuestionController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function index(): View|ViewApplication|Factory|Application
     {
-        Question::query()->create(
-            request()->validate([
-                'question' => [
-                    'required',
-                    "min:10",
-                    new EndWithQuestionMarkRule(),
-                ],
-            ])
-        );
+        $questions = user()->questions;
 
-        return to_route('dashboard');
+        return view('question.index', compact('questions'));
+    }
+
+    public function store(StoreQuestionRequest $request): RedirectResponse
+    {
+        user()->questions()->create([
+            'question' => request()->question,
+            'draft'    => true,
+        ]);
+
+        return back();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function publish(Question $question): RedirectResponse
+    {
+        $this->authorize('modify', $question);
+        $question->update(['draft' => false]);
+
+        return back();
     }
 
     /**
@@ -33,6 +50,7 @@ class QuestionController extends Controller
 
         return back();
     }
+
     /**
      * @param Question $question
      * @return RedirectResponse
@@ -40,6 +58,18 @@ class QuestionController extends Controller
     public function dislike(Question $question): RedirectResponse
     {
         user()->dislike($question);
+
+        return back();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(Question $question): RedirectResponse
+    {
+        $this->authorize('modify', $question);
+
+        $question->delete();
 
         return back();
     }
