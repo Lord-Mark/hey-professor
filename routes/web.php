@@ -31,6 +31,7 @@ Route::prefix('question')
         Route::get('/question/{question}/edit', 'edit')->name('edit');
         Route::delete('/{question}', 'destroy')->name('destroy');
         Route::post('/like/{question}', 'like')->name('like');
+        Route::put('/{question}', 'update')->name('update');
         Route::post('/store', 'store')->name('store');
         Route::get('/index', 'index')->name('index');
     });
