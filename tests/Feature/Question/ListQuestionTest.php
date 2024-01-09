@@ -2,11 +2,13 @@
 
 use App\Models\Question;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use function Pest\Laravel\{actingAs, get};
 
-it('should list all the questions on the dashboard', function () {
+it('should list at least the first 5 questions on the dashboard', function () {
     // Arrange
-    $user = \App\Models\User::factory()->create();
+    $user = factoryNewUser();
     actingAs($user);
     // Cria algumas perguntas
     $questions = Question::factory()->count(5)->create();
@@ -23,4 +25,17 @@ it('should list all the questions on the dashboard', function () {
         $response->assertSee($q->question);
     }
 
+});
+
+it('should paginate the result', function () {
+    // Arrange
+    $user = factoryNewUser();
+    Question::factory()->count(25)->create(['draft' => false]);
+    actingAs($user);
+
+    // Act
+    $response = get(route('dashboard'));
+
+    // Assert → verifica se o que foi encontrado em questions é uma instância de LengthAwarePaginator
+    $response->assertViewHas('questions', fn ($value) => $value instanceof LengthAwarePaginator);
 });

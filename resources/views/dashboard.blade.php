@@ -24,9 +24,11 @@
         </div>
 
         <div class="space-y-4">
-        @foreach($questions as $item)
-            <x-question :question="$item" />
-        @endforeach
+            @foreach($questions as $item)
+                <x-question :question="$item"/>
+            @endforeach
+
+            {{ $questions->links() }}
         </div>
     </x-container>
 
