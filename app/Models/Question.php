@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 /**
  * @property string $question
  * @property bool $draft
+ * @property integer $id
  */
 class Question extends Model
 {
