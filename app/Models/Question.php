@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\{Model, SoftDeletes};
  * @property string $question
  * @property bool $draft
  * @property integer $id
+ * @property mixed $deleted_at
  */
 class Question extends Model
 {

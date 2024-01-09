@@ -108,4 +108,18 @@ class QuestionController extends Controller
         return to_route('question.index');
     }
 
+    /**
+     * @throws AuthorizationException
+     */
+    public function restore($id): RedirectResponse
+    {
+        $question = Question::withTrashed()->find($id);
+
+        $this->authorize('see', $question);
+
+        $question->restore();
+
+        return back();
+    }
+
 }
