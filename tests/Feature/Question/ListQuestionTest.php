@@ -39,3 +39,38 @@ it('should paginate the result', function () {
     // Assert → verifica se o que foi encontrado em questions é uma instância de LengthAwarePaginator
     $response->assertViewHas('questions', fn ($value) => $value instanceof LengthAwarePaginator);
 });
+
+it('should order by like and dislike, most liked on top, most disliked on bottom', function () {
+    // Arrange
+    $user  = factoryNewUser();
+    $user2 = factoryNewUser();
+    Question::factory()->count(5)->create(['draft' => false]);
+
+    /** @var Question $mostLikedQ */
+    $mostLikedQ = Question::query()->find(3);
+
+    /** @var Question $mostDislikedQ */
+    $mostDislikedQ = Question::query()->find(1);
+
+    // Act
+    $user->like($mostLikedQ);
+    $user2->dislike($mostDislikedQ);
+
+    actingAs($user);
+
+    $request = get(route('dashboard'));
+
+    // Assert
+    $request->assertViewHas(
+        'questions',
+        function ($questions) use ($mostDislikedQ, $mostLikedQ) {
+
+            expect($questions->first()->id)
+                ->toBe($mostLikedQ->id)
+                ->and($questions->last()->id)
+                ->toBe($mostDislikedQ->id);
+
+            return true;
+        }
+    );
+});
