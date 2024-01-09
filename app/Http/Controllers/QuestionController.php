@@ -69,6 +69,18 @@ class QuestionController extends Controller
     {
         $this->authorize('see', $question);
 
+        $question->forceDelete();
+
+        return back();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function archive(Question $question): RedirectResponse
+    {
+        $this->authorize('see', $question);
+
         $question->delete();
 
         return back();

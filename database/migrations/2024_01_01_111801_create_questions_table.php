@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->boolean('draft')->default(true);
             $table->foreignIdFor(User::class, 'created_by');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
