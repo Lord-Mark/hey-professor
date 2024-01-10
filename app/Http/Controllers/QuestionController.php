@@ -15,7 +15,7 @@ class QuestionController extends Controller
     public function index(): View|ViewApplication|Factory|Application
     {
         $questions         = user()->questions;
-        $archivedQuestions = user()->questions()->onlyTrashed()->get();
+        $archivedQuestions = Question::onlyTrashed()->where('created_by', "=", user()->getAttribute('id'));
 
         return view('question.index', compact(['questions', 'archivedQuestions']));
     }
