@@ -2,17 +2,21 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\EndWithQuestionMarkRule;
+use App\Models\Question;
+use App\Rules\{EndWithQuestionMarkRule, SameQuestionRule};
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuestionRequest extends FormRequest
+class QuestionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        /** @var Question $question */
+        $question = $this->route('question');
+
+        return $this->user()->can('update', $question);
     }
 
     /**
@@ -27,6 +31,7 @@ class QuestionRequest extends FormRequest
                 'required',
                 "min:10",
                 new EndWithQuestionMarkRule(),
+                new SameQuestionRule(),
             ],
         ];
     }

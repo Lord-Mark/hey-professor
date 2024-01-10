@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\QuestionRequest;
+use App\Http\Requests\{QuestionStoreRequest, QuestionUpdateRequest};
 use App\Models\{Question};
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -20,7 +20,7 @@ class QuestionController extends Controller
         return view('question.index', compact(['questions', 'archivedQuestions']));
     }
 
-    public function store(QuestionRequest $request): RedirectResponse
+    public function store(QuestionStoreRequest $request): RedirectResponse
     {
         user()->questions()->create([
             'question' => request()->question,
@@ -97,12 +97,8 @@ class QuestionController extends Controller
         return view('question.edit', compact('question'));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
-    public function update(QuestionRequest $request, Question $question): RedirectResponse
+    public function update(QuestionUpdateRequest $request, Question $question): RedirectResponse
     {
-        $this->authorize('update', $question);
         $question->question = request()->question;
         $question->save();
 
