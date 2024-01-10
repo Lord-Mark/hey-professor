@@ -1,14 +1,19 @@
 <?php
 
-use App\Http\Controllers\{DashboardController, ProfileController, QuestionController};
+use App\Http\Controllers\{
+    Auth\GithubController,
+    DashboardController,
+    ProfileController,
+    QuestionController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (app()->isLocal()) {
-        auth()->loginUsingId(1);
-
-        return to_route('dashboard');
-    }
+    //    if (app()->isLocal()) {
+    //        auth()->loginUsingId(1);
+    //
+    //        return to_route('dashboard');
+    //    }
 
     return view('welcome');
 });
@@ -20,6 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::controller(GithubController::class)
+    ->prefix('github')
+    ->name('github.')
+    ->group(function () {
+        Route::get('login', 'login')->name('login');
+        Route::get('callback', 'callback')->name('callback');
+    });
 
 Route::prefix('question')
     ->name('question.')
