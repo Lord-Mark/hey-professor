@@ -5,17 +5,15 @@
 
     <x-container>
 
-        <x-form post :action="route('question.store')">
+        <x-search-input
+            placeholder="Busque uma pergunta"
+            label="Buscar"
+            :action="route('dashboard')"
+            name="search"
+        />
 
-            <x-textarea name="question" label="Faça sua pergunta"/>
+        <hr class="border-gray-700 border-dashed my-5">
 
-            <x-btn.primary type="submit">Enviar Pergunta</x-btn.primary>
-
-            <x-btn.reset type="reset">Cancelar</x-btn.reset>
-
-        </x-form>
-
-        <hr class="border-gray-700 border-dashed my-3">
 
         {{-- Listagem das perguntas --}}
 
@@ -23,13 +21,24 @@
             Lista de Perguntas
         </div>
 
-        <div class="space-y-4">
-            @foreach($questions as $item)
-                <x-question :question="$item"/>
-            @endforeach
+        @if($questions->isEmpty())
+            <div class="space-y-5 mt-10">
+                <div class="flex justify-center">
+                    <x-draw.searching width="300"/>
+                </div>
+                <div class="text-center text-gray-400 font-bold text-2xl">
+                    Pergunta não encontrada...
+                </div>
+            </div>
+        @else
+            <div class="space-y-4">
+                @foreach($questions as $item)
+                    <x-question :question="$item"/>
+                @endforeach
 
-            {{ $questions->links() }}
-        </div>
+                {{ $questions->withQueryString()->links() }}
+            </div>
+        @endif
     </x-container>
 
 </x-app-layout>
