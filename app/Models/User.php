@@ -4,13 +4,19 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property mixed $questions
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +46,44 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password'          => 'hashed',
     ];
+
+    /**
+     * @param Question $question
+     * @return void
+     */
+    public function like(Question $question): void
+    {
+        $this->votes()->updateOrCreate(
+            [
+                "question_id" => $question->getAttribute('id'),
+            ],
+            [
+                "like"    => 1,
+                "dislike" => 0,
+            ]
+        );
+    }
+    public function dislike(Question $question): void
+    {
+        $this->votes()->updateOrCreate(
+            [
+                "question_id" => $question->getAttribute('id'),
+            ],
+            [
+                "like"    => 0,
+                "dislike" => 1,
+            ]
+        );
+    }
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'created_by');
+    }
 }
