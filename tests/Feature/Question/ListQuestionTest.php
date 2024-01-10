@@ -11,7 +11,7 @@ it('should list at least the first 5 questions on the dashboard', function () {
     $user = factoryNewUser();
     actingAs($user);
     // Cria algumas perguntas
-    $questions = Question::factory()->count(5)->create();
+    $questions = Question::factory()->count(5)->create(['draft' => false]);
 
     // Act
     // Acessa a rota
