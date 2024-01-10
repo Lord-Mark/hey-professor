@@ -19,7 +19,7 @@ class QuestionFactory extends Factory
     {
         return [
             'question'   => fake()->unique()->realText(50) . '?',
-            'draft'      => true,
+            'draft'      => fake()->boolean,
             'created_by' => User::factory(),
         ];
     }
