@@ -28,7 +28,7 @@
                 <x-question :question="$item"/>
             @endforeach
 
-            {{ $questions->links() }}
+            {{ $questions->withQueryString()->links() }}
         </div>
     </x-container>
 
