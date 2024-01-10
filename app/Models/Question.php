@@ -4,21 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
+use Illuminate\Database\Eloquent\{Builder, Model, Prunable, SoftDeletes};
 
 /**
  * @property string $question
  * @property bool $draft
  * @property integer $id
+ * @property mixed $deleted_at
  */
 class Question extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    use Prunable;
 
     protected $casts = [
         'draft' => 'boolean',
     ];
+
+    public function prunable(): Builder
+    {
+        return static::query()->where('deleted_at', '<=', now()->subMonth());
+    }
 
     public function votes(): HasMany
     {

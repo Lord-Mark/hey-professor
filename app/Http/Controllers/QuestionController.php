@@ -14,9 +14,10 @@ class QuestionController extends Controller
 {
     public function index(): View|ViewApplication|Factory|Application
     {
-        $questions = user()->questions;
+        $questions         = user()->questions;
+        $archivedQuestions = Question::onlyTrashed()->where('created_by', "=", user()->getAttribute('id'));
 
-        return view('question.index', compact('questions'));
+        return view('question.index', compact(['questions', 'archivedQuestions']));
     }
 
     public function store(QuestionRequest $request): RedirectResponse
@@ -69,6 +70,18 @@ class QuestionController extends Controller
     {
         $this->authorize('see', $question);
 
+        $question->forceDelete();
+
+        return back();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function archive(Question $question): RedirectResponse
+    {
+        $this->authorize('see', $question);
+
         $question->delete();
 
         return back();
@@ -94,6 +107,20 @@ class QuestionController extends Controller
         $question->save();
 
         return to_route('question.index');
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function restore($id): RedirectResponse
+    {
+        $question = Question::withTrashed()->find($id);
+
+        $this->authorize('see', $question);
+
+        $question->restore();
+
+        return back();
     }
 
 }

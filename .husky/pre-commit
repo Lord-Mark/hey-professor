@@ -11,7 +11,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Roda os testes
-echo "Running tests, please wait..."
+echo "Rodando testes, por favor aguarde..."
 php artisan test --parallel
 
 if [ $? -ne 0 ]; then
@@ -22,15 +22,22 @@ fi
 
 # Formatar cada arquivo alterado usando laravel pint
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".php\{0,1\}$") || true
+FORMATTING_ISSUES=false
 
-echo "Formatting files in PSR12, please wait..."
+echo "Checando formatação, por favor aguarde..."
 echo ""
 
 for FILE in $STAGED_FILES
 do
-#    echo "${FILE}"
-    ./vendor/bin/pint "${FILE}" > /dev/null >&1
-    git add "${FILE}"
+    ./vendor/bin/pint --test "${FILE}"
+
+    if [ $? -ne 0 ]; then
+        echo "Opa! O arquivo ${FILE} não está bem formatado. Corrija a formatação antes de continuar..."
+        FORMATTING_ISSUES=true
+    fi
 done
+if [ "$FORMATTING_ISSUES" = true ]; then
+    exit 1;
+fi
 
 exit 0;

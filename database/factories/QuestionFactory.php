@@ -18,7 +18,7 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            'question'   => fake()->realText(50) . '?',
+            'question'   => fake()->unique()->realText(50) . '?',
             'draft'      => true,
             'created_by' => User::factory(),
         ];

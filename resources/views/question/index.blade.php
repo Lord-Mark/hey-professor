@@ -46,12 +46,10 @@
                         <x-table.td>
                             <div class="flex">
 
-                                <x-form delete :action="route('question.destroy', $item)">
-
-                                    <x-btn.danger type="submit">
-                                        Deletar
-                                    </x-btn.danger>
-
+                                <x-form put :action="route('question.publish', $item)">
+                                    <x-btn.primary type="submit">
+                                        Publicar
+                                    </x-btn.primary>
                                 </x-form>
 
                                 <x-form get :action="route('question.edit', $item)">
@@ -60,10 +58,21 @@
                                     </x-btn.purple>
                                 </x-form>
 
-                                <x-form put :action="route('question.publish', $item)">
-                                    <x-btn.primary type="submit">
-                                        Publicar
-                                    </x-btn.primary>
+                                <x-form patch :action="route('question.archive', $item)">
+
+                                    <x-btn.alert type="submit">
+                                        Arquivar
+                                    </x-btn.alert>
+
+                                </x-form>
+
+                                <x-form delete :action="route('question.destroy', $item)"
+                                        onsubmit="return confirm('Deseja mesmo deletar esta pergunta?')">
+
+                                    <x-btn.danger type="submit">
+                                        Deletar
+                                    </x-btn.danger>
+
                                 </x-form>
 
                             </div>
@@ -103,14 +112,85 @@
                             {{ $item->question }}
                         </x-table.td>
                         <x-table.td>
-                            // Botão delete
-                            // Botão publicar
+                            <div class="flex">
+                                <x-form patch :action="route('question.archive', $item)">
+
+                                    <x-btn.alert type="submit">
+                                        Arquivar
+                                    </x-btn.alert>
+
+                                </x-form>
+                                <x-form delete :action="route('question.destroy', $item)"
+                                        onsubmit="return confirm('Deseja mesmo deletar esta pergunta?')">
+
+                                    <x-btn.danger type="submit">
+                                        Deletar
+                                    </x-btn.danger>
+
+                                </x-form>
+                            </div>
                         </x-table.td>
                     </x-table.tr>
                 @endforeach
                 </tbody>
             </x-table>
         </div>
+
+        <hr class="border-gray-700 border-dashed my-3">
+
+        {{-- Listagem de Perguntas arquivadas --}}
+
+        <div class="dark:text-gray-300 uppercase font-bold mb-1">
+            Perguntas arquivadas
+        </div>
+
+        <div class="space-y-4">
+
+            <x-table>
+                <x-table.thead>
+                    <tr>
+                        <x-table.th>
+                            Pergunta
+                        </x-table.th>
+                        <x-table.th>
+                            Ações
+                        </x-table.th>
+                    </tr>
+                </x-table.thead>
+                <tbody>
+                @foreach($archivedQuestions as $item)
+                    <x-table.tr>
+                        <x-table.td>
+                            {{ $item->question }}
+                        </x-table.td>
+                        <x-table.td>
+                            <div class="flex">
+
+                                <x-form patch :action="route('question.restore', $item)">
+
+                                    <x-btn.primary type="submit">
+                                        Restaurar
+                                    </x-btn.primary>
+
+                                </x-form>
+
+                                <x-form delete :action="route('question.destroy', $item)"
+                                        onsubmit="return confirm('Deseja mesmo deletar esta pergunta?')">
+
+                                    <x-btn.danger type="submit">
+                                        Deletar
+                                    </x-btn.danger>
+
+                                </x-form>
+
+                            </div>
+                        </x-table.td>
+                    </x-table.tr>
+                @endforeach
+                </tbody>
+            </x-table>
+        </div>
+
 
     </x-container>
 

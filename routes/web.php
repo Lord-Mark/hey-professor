@@ -29,6 +29,8 @@ Route::prefix('question')
         Route::post('/dislike/{question}', 'dislike')->name('dislike');
         Route::put('/publish/{question}', 'publish')->name('publish');
         Route::get('/question/{question}/edit', 'edit')->name('edit');
+        Route::patch('/{question}/archive', 'archive')->name('archive');
+        Route::patch('/{question}/restore', 'restore')->name('restore');
         Route::delete('/{question}', 'destroy')->name('destroy');
         Route::post('/like/{question}', 'like')->name('like');
         Route::put('/{question}', 'update')->name('update');
