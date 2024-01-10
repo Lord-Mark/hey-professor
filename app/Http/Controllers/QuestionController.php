@@ -14,9 +14,10 @@ class QuestionController extends Controller
 {
     public function index(): View|ViewApplication|Factory|Application
     {
-        $questions = user()->questions;
+        $questions         = user()->questions;
+        $archivedQuestions = user()->questions()->onlyTrashed()->get();
 
-        return view('question.index', compact('questions'));
+        return view('question.index', compact(['questions', 'archivedQuestions']));
     }
 
     public function store(QuestionRequest $request): RedirectResponse
