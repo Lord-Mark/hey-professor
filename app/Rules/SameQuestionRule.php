@@ -26,6 +26,6 @@ class SameQuestionRule implements ValidationRule
         // Essa forma também funciona, mas phpstan talvez não goste muito
         // return Question::query()->whereQuestion($value)->exists();
 
-        return Question::query()->where('question', '=', $value)->where('draft', '=', false)->exists();
+        return Question::query()->where('question', '=', $value)->exists();
     }
 }
